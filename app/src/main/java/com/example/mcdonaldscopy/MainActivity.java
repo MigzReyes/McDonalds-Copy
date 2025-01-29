@@ -1,58 +1,29 @@
 package com.example.mcdonaldscopy;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
-import java.util.Arrays;
-import java.util.List;
-
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.main_screen);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        setContentView(R.layout.main_screen); // Ensure main_screen.xml is correct
 
-        ViewPager2 viewPager = findViewById(R.id.viewPager);
+        // Find the BottomNavigationView
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        // Add images to the list
-        List<Integer> images = Arrays.asList(
-                R.drawable.image1,
-                R.drawable.image2,
-                R.drawable.image3
-        );
+        // Find the NavController correctly
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        assert navHostFragment != null;
+        NavController navController = navHostFragment.getNavController();
 
-        SlideShow adapter = new SlideShow(this, images);
-        viewPager.setAdapter(adapter);
-
-        autoSlide(viewPager, images.size());
-    }
-
-    private void autoSlide(ViewPager2 viewPager, int itemCount) {
-        final int delay = 3000; // 3 seconds
-        viewPager.postDelayed(new Runnable() {
-            int currentItem = 0;
-
-            @Override
-            public void run() {
-                currentItem = (currentItem + 1) % itemCount;
-                viewPager.setCurrentItem(currentItem, true);
-                viewPager.postDelayed(this, delay);
-            }
-        }, delay);
+        // Setup BottomNavigationView with NavController
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 }

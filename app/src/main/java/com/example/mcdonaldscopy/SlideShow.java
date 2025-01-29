@@ -1,7 +1,6 @@
 package com.example.mcdonaldscopy;
 
 import android.content.Context;
-import android.transition.Slide;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +12,17 @@ import java.util.List;
 public class SlideShow extends RecyclerView.Adapter<SlideShow.SliderViewHolder> {
 
     private final List<Integer> imageList;
-    private final Context context;
 
-    public SlideShow(Context context, List<Integer> imageList) {
-        this.context = context;
+    public SlideShow(fragment_main context, List<Integer> imageList) {
+        // Change fragment_main to Context
         this.imageList = imageList;
     }
 
     @NonNull
     @Override
     public SliderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.slideshow_images, parent, false);
+        // Use parent.getContext() instead of context
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.slideshow_images, parent, false);
         return new SliderViewHolder(view);
     }
 
@@ -46,4 +45,5 @@ public class SlideShow extends RecyclerView.Adapter<SlideShow.SliderViewHolder> 
         }
     }
 }
+
 
